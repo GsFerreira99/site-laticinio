@@ -29,6 +29,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['https://rancho-alere.herokuapp.com/']
 
+AUTH_USER_MODEL = "queijaria.User" 
+
 
 # Application definition
 
@@ -130,5 +132,16 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
+
+#Mensagens
+from django.contrib.messages import constants
+
+MESSAGE_TAGS = {
+    constants.ERROR: 'alert-danger',
+    constants.WARNING: 'alert-warning',
+    constants.DEBUG: 'alert-info',
+    constants.SUCCESS: 'alert-success',
+    constants.INFO: 'alert-info',
+}
 
 django_on_heroku.settings(locals())

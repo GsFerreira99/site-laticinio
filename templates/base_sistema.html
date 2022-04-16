@@ -120,15 +120,19 @@
     <div class="header__user">
         <img class="header__user--img" src="{% static 'img/user.svg' %}" alt="">
         <div class="header__user--texto">
-            <p class="header__user--texto-nome">Gabriel Ferreira</p>
-            <p class="header__user--texto-funcao">Funcionario</p>
+            <p class="header__user--texto-nome">{{user.first_name}} {{user.last_name}}</p>
+            <p class="header__user--texto-funcao">{{request.user.groups.first}}</p>
         </div>
     </div>
 </header>
 
 <div class="content">
+
     <div class="fundo">
         
+    </div>
+    <div class="box__mensagem">
+        {% include 'partials/_mensagem.html'%}
     </div>
 
     <div>
