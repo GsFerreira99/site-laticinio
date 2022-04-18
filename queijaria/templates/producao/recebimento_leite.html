@@ -4,6 +4,13 @@
 {%block style%}
 <link rel="stylesheet" href="{% static 'css/producao/recebimento.css' %}">
 <link rel="stylesheet" href="{% static 'css/modal.css' %}">
+
+
+<script type="text/javascript" src="{% static 'js/jquery.js'%}"></script>
+
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css">
+  
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js"></script>
 {%endblock%}
 
 {%block titulo_header%}Produção{%endblock%}
@@ -23,7 +30,7 @@
                 <input class="input-text" placeholder="pesquisar" type="text" name="pesquisar" id="pesquisar">
             </div>
             <div class="campo ">
-                <table class="tabela">
+                <table class="tabela" id="tabela">
                     <thead>
                         <tr>
                             <td>Data</td>
@@ -32,191 +39,18 @@
                         </tr>
                     </thead>
                     <tbody>
+                        {%for leite in leites%}
                         <tr>
-                            <td>10/02/22</td>
-                            <td>Parananema</td>
-                            <td>65.0</td>
+                            <td>{{leite.data}}</td>
+                            <td>{{leite.fornecedor}}</td>
+                            <td>{{leite.quantidade}}</td>
                         </tr>
-                        <tr>
-                            <td>10/02/22</td>
-                            <td>Parananema</td>
-                            <td>65.0</td>
-                        </tr>
-                        <tr>
-                            <td>10/02/22</td>
-                            <td>Parananema</td>
-                            <td>65.0</td>
-                        </tr>
-                        <tr>
-                            <td>10/02/22</td>
-                            <td>Parananema</td>
-                            <td>65.0</td>
-                        </tr>
-                        <tr>
-                            <td>10/02/22</td>
-                            <td>Parananema</td>
-                            <td>65.0</td>
-                        </tr>
-                        <tr>
-                            <td>10/02/22</td>
-                            <td>Parananema</td>
-                            <td>65.0</td>
-                        </tr>
-                        <tr>
-                            <td>10/02/22</td>
-                            <td>Parananema</td>
-                            <td>65.0</td>
-                        </tr>
-                        <tr>
-                            <td>10/02/22</td>
-                            <td>Parananema</td>
-                            <td>65.0</td>
-                        </tr>
-                        <tr>
-                            <td>10/02/22</td>
-                            <td>Parananema</td>
-                            <td>65.0</td>
-                        </tr>
-                        <tr>
-                            <td>10/02/22</td>
-                            <td>Parananema</td>
-                            <td>65.0</td>
-                        </tr>
-                        <tr>
-                            <td>10/02/22</td>
-                            <td>Parananema</td>
-                            <td>65.0</td>
-                        </tr>
-                        <tr>
-                            <td>10/02/22</td>
-                            <td>Parananema</td>
-                            <td>65.0</td>
-                        </tr>
-                        <tr>
-                            <td>10/02/22</td>
-                            <td>Parananema</td>
-                            <td>65.0</td>
-                        </tr>
-                        <tr>
-                            <td>10/02/22</td>
-                            <td>Parananema</td>
-                            <td>65.0</td>
-                        </tr>
-                        <tr>
-                            <td>10/02/22</td>
-                            <td>Parananema</td>
-                            <td>65.0</td>
-                        </tr>
-                        <tr>
-                            <td>10/02/22</td>
-                            <td>Parananema</td>
-                            <td>65.0</td>
-                        </tr>
-                        <tr>
-                            <td>10/02/22</td>
-                            <td>Parananema</td>
-                            <td>65.0</td>
-                        </tr>
-                        <tr>
-                            <td>10/02/22</td>
-                            <td>Parananema</td>
-                            <td>65.0</td>
-                        </tr>
-                        <tr>
-                            <td>10/02/22</td>
-                            <td>Parananema</td>
-                            <td>65.0</td>
-                        </tr>
-                        <tr>
-                            <td>10/02/22</td>
-                            <td>Parananema</td>
-                            <td>65.0</td>
-                        </tr>
-                        <tr>
-                            <td>10/02/22</td>
-                            <td>Parananema</td>
-                            <td>65.0</td>
-                        </tr>
-                        <tr>
-                            <td>10/02/22</td>
-                            <td>Parananema</td>
-                            <td>65.0</td>
-                        </tr>
-                        <tr>
-                            <td>10/02/22</td>
-                            <td>Parananema</td>
-                            <td>65.0</td>
-                        </tr>
-                        <tr>
-                            <td>10/02/22</td>
-                            <td>Parananema</td>
-                            <td>65.0</td>
-                        </tr>
-                        <tr>
-                            <td>10/02/22</td>
-                            <td>Parananema</td>
-                            <td>65.0</td>
-                        </tr>
-                        <tr>
-                            <td>10/02/22</td>
-                            <td>Parananema</td>
-                            <td>65.0</td>
-                        </tr>
-                        <tr>
-                            <td>10/02/22</td>
-                            <td>Parananema</td>
-                            <td>65.0</td>
-                        </tr>
-                        <tr>
-                            <td>10/02/22</td>
-                            <td>Parananema</td>
-                            <td>65.0</td>
-                        </tr>
-                        <tr>
-                            <td>10/02/22</td>
-                            <td>Parananema</td>
-                            <td>65.0</td>
-                        </tr>
-                        <tr>
-                            <td>10/02/22</td>
-                            <td>Parananema</td>
-                            <td>65.0</td>
-                        </tr>
-                        <tr>
-                            <td>10/02/22</td>
-                            <td>Parananema</td>
-                            <td>65.0</td>
-                        </tr>
-                        <tr>
-                            <td>10/02/22</td>
-                            <td>Parananema</td>
-                            <td>65.0</td>
-                        </tr>
-                        <tr>
-                            <td>10/02/22</td>
-                            <td>Parananema</td>
-                            <td>65.0</td>
-                        </tr>
-                        <tr>
-                            <td>10/02/22</td>
-                            <td>Parananema</td>
-                            <td>65.0</td>
-                        </tr>
-                        <tr>
-                            <td>10/02/22</td>
-                            <td>Parananema</td>
-                            <td>65.0</td>
-                        </tr>
-                        <tr>
-                            <td>10/02/22</td>
-                            <td>Parananema</td>
-                            <td>65.0</td>
-                        </tr>
+                        {%endfor%}
                     </tbody>
                     <tfoot>
                         <tr>
                             <td colspan="2">Total</td>
-                            <td >99.9</td>
+                            <td >{{leite_total.quantidade__sum}}</td>
                         </tr>
                     </tfoot>
                 </table>
@@ -231,20 +65,25 @@
         <div class="modal-content">
           <span class="close">&times;</span>
           <h2>Inserir Recebimento de Leite</h2>
-          <form class="form" action="">
+          <form class="form" action="{% url 'recebimento-leite' %}" method="POST">
+            {% csrf_token %}
             <div class="form__campo">
                 <label class="form__campo-label" for="data">Data</label>
                 <input class="form__campo-input" name="data" id="data" type="datetime-local">
             </div>
             <div class="form__campo">
                 <label class="form__campo-label" for="">Fornecedor</label>
-                <input class="form__campo-input" type="text">
+                <select class="form__campo-input" name="fornecedor" id="fornecedor">
+                    {% for fornecedor in fornecedores%}
+                        <option value="{{fornecedor}}">{{fornecedor}}</option>
+                    {%endfor%}
+                  </select>
             </div>
             <div class="form__campo">
                 <label class="form__campo-label" for="qnt">Quantidade</label>
-                <input class="form__campo-input" name="qnt" id="1nt" type="number">
+                <input class="form__campo-input" name="qnt" step="0.01" id="qnt" type="number">
             </div>
-            <button class="botao">Salvar</button>
+            <button type="submit" class="botao">Salvar</button>
           </form>
         </div>
       
@@ -252,6 +91,11 @@
 
       {% block js %}
       <script src="{%static 'js/modal.js'%}"></script>
+      <script>
+            $(document).ready( function () {
+            $('#tabela').DataTable();
+        } );
+      </script>
       {%endblock%}
 
 {% endblock%}

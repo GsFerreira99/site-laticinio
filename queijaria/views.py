@@ -1,7 +1,10 @@
-from multiprocessing import context
 from django.shortcuts import redirect, render
 from django.contrib import auth, messages
 from django.views import View
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models import Sum
+
+from queijaria.models import Fornecedor, RecebimentoLeite
 
 class login(View):
     template_name = 'login.html'
@@ -42,26 +45,40 @@ def logout(request):
     auth.logout(request)
     return redirect('login')
 
-class home(View):
+class home(LoginRequiredMixin, View):
+    login_url = 'queijaria/login/'
 
     def get(self, request):
-        if request.user.is_authenticated:
-            context = {
-                'nome' : f'{request.user.first_name} {request.user.last_name}',
-                'funcao' : request.user.groups.first()
-            }
-            return render(request, 'home.html', context)
-        else:
-            return redirect('login')
-
-class recebimento_leite(View):
-
-    def get(self, request):
-        if request.user.is_authenticated:
-            context = {
+        context = {
                 'user' : request.user
             }
-            return render(request, 'producao/recebimento_leite.html', context)
-        else:
-            return redirect('login')
+        return render(request, 'home.html', context)
+
+
+class recebimento_leite(LoginRequiredMixin, View):
+    login_url = 'queijaria/login/'
+
+
+    def get(self, request):
+        context = {
+                'user' : request.user,
+                'fornecedores': Fornecedor.objects.all(),
+                'leites' : RecebimentoLeite.objects.all(),
+                'leite_total' : RecebimentoLeite.objects.values('quantidade').aggregate(Sum('quantidade')),
+            }
+        return render(request, 'producao/recebimento_leite.html', context)
+
         
+    def post(self, request):
+        
+        context = {
+                'user' : request.user,
+                'fornecedores': Fornecedor.objects.all(),
+                'leites' : RecebimentoLeite.objects.all(),
+                'leite_total' : RecebimentoLeite.objects.values('quantidade').aggregate(Sum('quantidade')),
+            }
+
+
+        dados = request.POST
+        RecebimentoLeite.objects.create(data=dados.get('data'), fornecedor=Fornecedor.objects.get(nome=dados.get('fornecedor')), quantidade=dados.get('qnt'))
+        return render(request, 'producao/recebimento_leite.html', context)

@@ -16,6 +16,7 @@
 {%block conteudo%}
 
 {% url 'home' as home_url %}
+{% url 'logout' as logout_url %}
 {% url 'recebimento-leite' as recebimento_leite_url %}
 
 <header class="header">
@@ -117,11 +118,22 @@
       </nav>
     
     <a class="header__notify" href=""><img src="{% static 'img/sino.svg' %}" alt=""></a>
-    <div class="header__user">
-        <img class="header__user--img" src="{% static 'img/user.svg' %}" alt="">
-        <div class="header__user--texto">
-            <p class="header__user--texto-nome">{{user.first_name}} {{user.last_name}}</p>
-            <p class="header__user--texto-funcao">{{request.user.groups.first}}</p>
+    <button id="myUserBtn" class="btn_header_user">
+        <div class="header__user">
+            <img class="header__user--img" src="{% static 'img/user.svg' %}" alt="">
+            <div class="header__user--texto">
+                <p class="header__user--texto-nome">{{user.first_name}} {{user.last_name}}</p>
+                <p class="header__user--texto-funcao">{{request.user.groups.first}}</p>
+            </div>
+        </div>
+    </button>
+    <div class="user__info" id="myUserBox">
+        <div class="user-content">
+            <div id="triangulo-para-cima"></div>
+            <span class="closeWindow">&times;</span>
+            <ul class="user_lista">
+                <li><a href="{{logout_url}}">Logout</a></li>
+            </ul>
         </div>
     </div>
 </header>
@@ -142,7 +154,7 @@
 
 </div>
 
-
+<script src="{%static 'js/info-user.js'%}"></script>
 {% block js %}
 {%endblock%}
 

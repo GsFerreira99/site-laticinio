@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import User
+from .models import Fornecedor, RecebimentoLeite, User
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.forms import UserChangeForm
 
@@ -14,4 +14,12 @@ class MyUserAdmin(UserAdmin):
             (None, {'fields': ('cpf',)}),
     )
 
+class FornecedorAdmin(admin.ModelAdmin):
+    list_display = ('id', 'nome',)
+
+class RecebimentoLeiteAdmin(admin.ModelAdmin):
+    list_display = ('id', 'data', 'fornecedor', 'quantidade',)
+
 admin.site.register(User, MyUserAdmin)
+admin.site.register(Fornecedor, FornecedorAdmin)
+admin.site.register(RecebimentoLeite, RecebimentoLeiteAdmin)
