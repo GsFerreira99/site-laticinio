@@ -1,12 +1,12 @@
-from calendar import c
-from pyexpat import model
-from tokenize import group
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 
 
 class User(AbstractUser):
     cpf = models.IntegerField(default=00000000000)
+
+    def get_group(self):
+        return self.groups.name
 
 
 class Fornecedor(models.Model):
@@ -20,4 +20,4 @@ class RecebimentoLeite(models.Model):
     fornecedor = models.ForeignKey(Fornecedor, on_delete=models.DO_NOTHING)
     quantidade = models.FloatField(default=0)
 
-# Create your models here.
+

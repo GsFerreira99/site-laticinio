@@ -7,4 +7,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('queijaria/', include('queijaria.urls')),
     path('', include('queijaria.urls')),
+    path('api/', include('api.urls'))
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
