@@ -7,10 +7,9 @@
 
 
 <script type="text/javascript" src="{% static 'js/jquery.js'%}"></script>
-
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css">
-  
 <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js"></script>
+<script src="{%static 'js/table.js'%}"></script>
 {%endblock%}
 
 {%block titulo_header%}Produção{%endblock%}
@@ -22,7 +21,7 @@
         <h2>Produção / Recebimento Leite</h2>
     </div>
 
-    <div class="recebimentoLeite">
+    <div class="recebimentoLeite"> 
 
         <div class="box-conteudo cont1">
             <button class="botao" id="myBtn">Novo</button>
@@ -91,11 +90,7 @@
 
       {% block js %}
       <script src="{%static 'js/modal.js'%}"></script>
-      <script>
-            $(document).ready( function () {
-            $('#tabela').DataTable();
-        } );
-      </script>
+      
       {%endblock%}
 
 {% endblock%}

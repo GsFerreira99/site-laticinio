@@ -1,10 +1,12 @@
+from traceback import print_tb
+from django.http import HttpRequest, HttpResponse
 from django.shortcuts import redirect, render
 from django.contrib import auth, messages
 from django.views import View
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Sum
 
-from queijaria.models import Fornecedor, RecebimentoLeite
+from queijaria.models import Fornecedor, Producao, Produto, RecebimentoLeite
 
 class login(View):
     template_name = 'login.html'
@@ -46,7 +48,7 @@ def logout(request):
     return redirect('login')
 
 class home(LoginRequiredMixin, View):
-    login_url = 'queijaria/login/'
+    login_url = 'login/'
 
     def get(self, request):
         context = {
@@ -54,9 +56,8 @@ class home(LoginRequiredMixin, View):
             }
         return render(request, 'home.html', context)
 
-
 class recebimento_leite(LoginRequiredMixin, View):
-    login_url = 'queijaria/login/'
+    login_url = 'login/'
 
 
     def get(self, request):
@@ -82,3 +83,91 @@ class recebimento_leite(LoginRequiredMixin, View):
         dados = request.POST
         RecebimentoLeite.objects.create(data=dados.get('data'), fornecedor=Fornecedor.objects.get(nome=dados.get('fornecedor')), quantidade=dados.get('qnt'))
         return render(request, 'producao/recebimento_leite.html', context)
+
+class produção_diaria(LoginRequiredMixin, View):
+    login_url = 'login/'
+
+
+    def get(self, request):
+        table = Producao.objects.all()
+        lote = Producao.objects.values_list('id').last()[0] + 1
+        context = {
+                'user' : request.user,
+                'produtos': Produto.objects.all(),
+                'lote': lote,
+                'producoes': table
+            }
+
+        return render(request, 'producao/producao_diaria.html', context)
+
+        
+    def post(self, request):
+        lote = Producao.objects.values_list('id').last()[0] + 1
+
+        dados = request.POST
+
+        dados = {
+            'lote' : dados.get('lote'),
+            'data' : dados.get('data'),
+            'produto' : Produto.objects.filter(nome=dados.get('produto')).first(),
+            'leite' : dados.get('leite'),
+            'sal' : dados.get('sal'),
+            'açucar' : dados.get('açucar'),
+            'rendimento' : dados.get('rendimento'),
+            'observação' : dados.get('observação'),
+        }
+
+        context = {
+                'user' : request.user,
+                'produtos': Produto.objects.all(),
+                'lote': lote,
+                'dados': dados
+            }
+
+        if dados['lote'] == '' or dados['data'] == '' or dados['produto'] == '' or dados['leite'] == '':
+            messages.error(request, "Os campos (lote, data, produto, leite) não podem estar vazios. Preencha-os corretamente.")
+            return render(request, 'producao/producao_diaria.html', context)
+
+        if dados['sal'] == '' and dados['açucar'] == '':
+            messages.error(request, "Um dos campos (sal, açucar) deve ser preenchido.")
+            return render(request, 'producao/producao_diaria.html', context)
+
+        if dados['sal'] != '' and dados['açucar'] != '':
+            messages.error(request, "Apenas um dos campos (sal, açucar) deve ser preenchido.")
+            return render(request, 'producao/producao_diaria.html', context)
+
+        if dados['sal'] == '':
+            dados['sal'] = 0
+
+        if dados['açucar'] == '':
+            dados['açucar'] = 0
+
+        if dados['rendimento'] == '':
+            dados['rendimento'] = 0
+        
+        if dados['observação'] == '':
+            dados['observação'] = 0
+
+        Producao.objects.create(
+            lote = dados['lote'],
+            data = dados['data'],
+            produto = dados['produto'],
+            leite = dados['leite'],
+            sal = dados['sal'],
+            acucar = dados['açucar'],
+            rendimento = dados['rendimento'],
+            observacao = dados['observação'],
+        )
+        
+
+        context['dados'] = {
+            'leite' : '',
+            'sal' : '',
+            'açucar' : '',
+            'rendimento' : '',
+            'observação' : '',
+        }
+
+        print(context)
+        messages.success(request, "Produção inserida com sucesso.")
+        return redirect('producao-diaria')

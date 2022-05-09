@@ -277,6 +277,33 @@ main {
     margin: 0 2rem;
 }
 
+.box-conteudo {
+    grid-area: box;
+    grid-column: 1/1;
+    background-color: var(--branco-texto);
+    box-shadow: 2px 2px 29px rgba(0, 0, 0, 0.25);
+    border-radius: 10px;
+    padding: 2rem 1rem;
+    height: auto;
+    display: inline-block;
+}
+
+.mainContent {
+    height: auto;
+    padding: 0 2rem;
+    padding-bottom: 2rem;
+
+    display: grid;
+    grid-template-areas: 
+    "box1"
+    "box2"
+    ;
+
+    grid-gap: 1rem;
+}
+
+
+
 @media screen and (min-width: 768px) {
 
 

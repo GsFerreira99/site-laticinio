@@ -18,6 +18,7 @@
 {% url 'home' as home_url %}
 {% url 'logout' as logout_url %}
 {% url 'recebimento-leite' as recebimento_leite_url %}
+{% url 'producao-diaria' as producao_diaria_url %}
 
 <header class="header">
 
@@ -46,7 +47,7 @@
                         <a  href="{{recebimento_leite_url}}">Recebimento Leite</a>
                     </li>
                     <li class="sidebar__subitems--item">
-                        <a  href="">Consultar Produções</a>
+                        <a  href="{{producao_diaria_url}}">Produção Diária</a>
                     </li>
 
                 </ul>
