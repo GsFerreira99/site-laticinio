@@ -90,7 +90,11 @@ class produção_diaria(LoginRequiredMixin, View):
 
     def get(self, request):
         table = Producao.objects.all()
-        lote = Producao.objects.values_list('id').last()[0] + 1
+        try:
+            lote = Producao.objects.values_list('id').last()[0] + 1
+        except:
+            lote = 1
+
         context = {
                 'user' : request.user,
                 'produtos': Produto.objects.all(),
@@ -102,7 +106,10 @@ class produção_diaria(LoginRequiredMixin, View):
 
         
     def post(self, request):
-        lote = Producao.objects.values_list('id').last()[0] + 1
+        try:
+            lote = Producao.objects.values_list('id').last()[0] + 1
+        except:
+            lote = 1
 
         dados = request.POST
 
