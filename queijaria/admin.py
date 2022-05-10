@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Fornecedor, RecebimentoLeite, User, Producao, Produto, TipoProduto
+from .models import Estoque, Fornecedor, RecebimentoLeite, User, Producao, Produto, TipoProduto, CategoriaProduto
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.forms import UserChangeForm
 
@@ -29,9 +29,17 @@ class ProducaoAdmin(admin.ModelAdmin):
 class RecebimentoLeiteAdmin(admin.ModelAdmin):
     list_display = ('id', 'data', 'fornecedor', 'quantidade',)
 
+class CategoriaProdutoAdmin(admin.ModelAdmin):
+    list_display = ('id', 'nome')
+
+class EstoqueAdmin(admin.ModelAdmin):
+    list_display = ('id', 'produto', 'unidade', 'quantidade')
+
 admin.site.register(User, MyUserAdmin)
 admin.site.register(Fornecedor, FornecedorAdmin)
 admin.site.register(Produto, ProdutoAdmin)
 admin.site.register(TipoProduto, TipoProdutoAdmin)
 admin.site.register(Producao, ProducaoAdmin)
 admin.site.register(RecebimentoLeite, RecebimentoLeiteAdmin)
+admin.site.register(CategoriaProduto, CategoriaProdutoAdmin)
+admin.site.register(Estoque, EstoqueAdmin)

@@ -6,7 +6,7 @@ from django.views import View
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Sum
 
-from queijaria.models import Fornecedor, Producao, Produto, RecebimentoLeite
+from queijaria.models import Estoque, Fornecedor, Producao, Produto, RecebimentoLeite
 
 class login(View):
     template_name = 'login.html'
@@ -120,6 +120,7 @@ class produção_diaria(LoginRequiredMixin, View):
             'leite' : dados.get('leite'),
             'sal' : dados.get('sal'),
             'açucar' : dados.get('açucar'),
+            'peso' : dados.get('peso'),
             'rendimento' : dados.get('rendimento'),
             'observação' : dados.get('observação'),
         }
@@ -131,8 +132,8 @@ class produção_diaria(LoginRequiredMixin, View):
                 'dados': dados
             }
 
-        if dados['lote'] == '' or dados['data'] == '' or dados['produto'] == '' or dados['leite'] == '':
-            messages.error(request, "Os campos (lote, data, produto, leite) não podem estar vazios. Preencha-os corretamente.")
+        if dados['lote'] == '' or dados['data'] == '' or dados['produto'] == '' or dados['leite'] == '' or dados['peso'] == '':
+            messages.error(request, "Os campos (lote, data, produto, leite, peso) não podem estar vazios. Preencha-os corretamente.")
             return render(request, 'producao/producao_diaria.html', context)
 
         if dados['sal'] == '' and dados['açucar'] == '':
@@ -153,7 +154,7 @@ class produção_diaria(LoginRequiredMixin, View):
             dados['rendimento'] = 0
         
         if dados['observação'] == '':
-            dados['observação'] = 0
+            dados['observação'] = ''
 
         Producao.objects.create(
             lote = dados['lote'],
@@ -161,20 +162,51 @@ class produção_diaria(LoginRequiredMixin, View):
             produto = dados['produto'],
             leite = dados['leite'],
             sal = dados['sal'],
+            peso = dados['peso'],
             acucar = dados['açucar'],
             rendimento = dados['rendimento'],
             observacao = dados['observação'],
         )
+
+        try:
+            estoque = Estoque.objects.filter(produto=dados['produto']).first()
+            print(estoque.produto)
+            qnt = estoque.quantidade
+            peso = dados['peso']
+            total = qnt+float(peso)
+            estoque.quantidade = total
+            estoque.save()
+        except:
+            if dados['produto'].tipo.nome == 'Queijo':
+                uni = 'KG'
+            else:
+                uni = 'UNI'
+            Estoque.objects.create(
+                produto = dados['produto'],
+                quantidade = dados['peso'],
+                unidade = uni 
+            )
         
 
         context['dados'] = {
             'leite' : '',
             'sal' : '',
             'açucar' : '',
+            'peso' : '',
             'rendimento' : '',
             'observação' : '',
         }
 
-        print(context)
         messages.success(request, "Produção inserida com sucesso.")
         return redirect('producao-diaria')
+
+class estoque(LoginRequiredMixin, View):
+    login_url = 'login/'
+
+    def get(self, request):
+        context = {
+                'user' : request.user,
+                'estoques': Estoque.objects.all(),
+
+            }
+        return render(request, 'estoque/estoque.html', context)

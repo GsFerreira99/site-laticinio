@@ -26,10 +26,20 @@ class TipoProduto(models.Model):
     def __str__(self) -> str:
         return self.nome
 
+class CategoriaProduto(models.Model):
+    nome = models.CharField(max_length=50)
+
+    def __str__(self) -> str:
+        return self.nome
+
 class Produto(models.Model):
     tipo = models.ForeignKey(TipoProduto, on_delete=models.DO_NOTHING)
-    nome = models.CharField(max_length=40)
-
+    nome = models.CharField(max_length=40, unique=True)
+    categoria = models.ForeignKey(CategoriaProduto, on_delete=models.DO_NOTHING, default=1)
+    marca = models.CharField(max_length=25, default=0)
+    codBarras = models.IntegerField(default=0)
+    valorCompra = models.FloatField(default=0)
+    valorVenda = models.FloatField(default=0)
     class Meta:
         default_related_name = 'produto'
 
@@ -52,3 +62,9 @@ class Producao(models.Model):
 
     def __str__(self) -> str:
         return str(self.lote)
+
+class Estoque(models.Model):
+    produto = models.OneToOneField(Produto, on_delete=models.DO_NOTHING)
+    quantidade = models.FloatField(default=0)
+    unidade = models.CharField(max_length=20)
+

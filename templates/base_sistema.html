@@ -19,6 +19,7 @@
 {% url 'logout' as logout_url %}
 {% url 'recebimento-leite' as recebimento_leite_url %}
 {% url 'producao-diaria' as producao_diaria_url %}
+{% url 'estoque' as estoque_url %}
 
 <header class="header">
 
@@ -58,7 +59,7 @@
 
                 <ul class="sidebar__subitems">
                     <li class="sidebar__subitems--item">
-                        <a  href="">Consultar Estoque</a>
+                        <a  href="{{estoque_url}}">Consultar Estoque</a>
                     </li>
 
                 </ul>
