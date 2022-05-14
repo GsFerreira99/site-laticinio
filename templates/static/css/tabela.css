@@ -37,3 +37,16 @@
 .tabela tbody tr:hover {
     background-color: var(--input-bg);
 }
+
+.dataTables_wrapper {
+    width: 300px;
+    margin: 0 auto;
+}
+
+
+@media screen and (min-width: 550px) {
+    .dataTables_wrapper {
+        width: auto;
+        margin: 0;
+    }
+}

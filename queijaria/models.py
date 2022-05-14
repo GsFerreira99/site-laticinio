@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
-
+from django.contrib.contenttypes.fields import GenericForeignKey
+from django.contrib.contenttypes.models import ContentType
 
 class User(AbstractUser):
     cpf = models.IntegerField(default=00000000000)
@@ -67,4 +68,49 @@ class Estoque(models.Model):
     produto = models.OneToOneField(Produto, on_delete=models.DO_NOTHING)
     quantidade = models.FloatField(default=0)
     unidade = models.CharField(max_length=20)
+
+class Pessoa(models.Model):
+    nome = models.CharField(max_length=30)
+    endereco = models.CharField(max_length=200, blank=True)
+    telefone = models.CharField(max_length=11)
+    email = models.EmailField(unique=True)
+
+    class Meta:
+        abstract = True
+
+    def __str__(self):
+        return self.nome
+
+
+class PessoaFisica(Pessoa):
+    sobrenome = models.CharField(max_length=50)
+    cpf = models.CharField(max_length=11)
+    nascimento = models.DateField(blank=True)
+
+
+class PessoaJuridica(Pessoa):
+    razao_social = models.CharField(max_length=255)
+    cnpj = models.CharField(max_length=14)
+    inscricao_estadual = models.CharField(max_length=20)
+
+
+class Cliente(models.Model):
+    limite = models.Q(model = 'pessoafisica') | models.Q(model = 'pessoajuridica')
+    content_type = models.ForeignKey(ContentType, on_delete=models.DO_NOTHING, limit_choices_to=limite) 
+    object_id = models.PositiveIntegerField() 
+    content_object=GenericForeignKey('content_type', 'object_id')
+
+class ItemVenda(models.Model):
+    produto = models.ForeignKey(Produto, on_delete=models.DO_NOTHING, blank=False)
+    quantidade = models.FloatField(blank=False)
+
+
+class Venda(models.Model):
+    data = models.DateField()
+    cliente = models.ForeignKey(Cliente, on_delete=models.DO_NOTHING)
+    items = models.ManyToManyField(ItemVenda)
+    total = models.FloatField()
+    faturamento = models.CharField(max_length=25)
+    vencimento = models.DateField()
+
 

@@ -6,7 +6,7 @@ from django.views import View
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Sum
 
-from queijaria.models import Estoque, Fornecedor, Producao, Produto, RecebimentoLeite
+from queijaria.models import Estoque, Fornecedor, Producao, Produto, RecebimentoLeite, Cliente
 
 class login(View):
     template_name = 'login.html'
@@ -199,6 +199,18 @@ class produção_diaria(LoginRequiredMixin, View):
 
         messages.success(request, "Produção inserida com sucesso.")
         return redirect('producao-diaria')
+
+class clientes(LoginRequiredMixin, View):
+    login_url = 'login/'
+
+    def get(self, request):
+        cliente = Cliente.objects.all()
+        cliente = list(map(lambda x: x.content_object, cliente))
+        context = {
+            'user' : request.user,
+            'clientes' : cliente
+            }
+        return render(request, 'clientes/clientes.html', context)
 
 class estoque(LoginRequiredMixin, View):
     login_url = 'login/'

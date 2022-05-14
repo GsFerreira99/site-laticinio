@@ -20,6 +20,7 @@
 {% url 'recebimento-leite' as recebimento_leite_url %}
 {% url 'producao-diaria' as producao_diaria_url %}
 {% url 'estoque' as estoque_url %}
+{% url 'clientes' as clientes_url %}
 
 <header class="header">
 
@@ -95,7 +96,7 @@
 
                 <ul class="sidebar__subitems">
                     <li class="sidebar__subitems--item">
-                        <a  href="">Consultar Clientes</a>
+                        <a  href="{{clientes_url}}">Consultar Clientes</a>
                     </li>
                     <li class="sidebar__subitems--item">
                         <a  href="">Consultar Fornecedores</a>

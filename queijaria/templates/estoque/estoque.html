@@ -11,6 +11,8 @@
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css">
     <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js"></script>
     <script src="{%static 'js/table.js'%}"></script>
+
+    <link rel="stylesheet" href="{% static 'css/tabela.css'%}">
 {%endblock%}
 
 {%block titulo_header%}Estoque{%endblock%}
@@ -26,7 +28,7 @@
         <div class="box-conteudo">
 
             <div class="campo ">
-                <table class="tabela" id="tabela">
+                <table class="tabela" id="tabela" style="width:100%">
                     <thead>
                         <tr>
                             <td>Produto</td>

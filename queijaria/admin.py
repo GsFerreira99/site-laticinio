@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Estoque, Fornecedor, RecebimentoLeite, User, Producao, Produto, TipoProduto, CategoriaProduto
+from .models import Cliente, Estoque, Fornecedor, ItemVenda, PessoaFisica, PessoaJuridica, RecebimentoLeite, User, Producao, Produto, TipoProduto, CategoriaProduto, Venda
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.forms import UserChangeForm
 
@@ -35,6 +35,21 @@ class CategoriaProdutoAdmin(admin.ModelAdmin):
 class EstoqueAdmin(admin.ModelAdmin):
     list_display = ('id', 'produto', 'unidade', 'quantidade')
 
+class ClienteAdmin(admin.ModelAdmin):
+    list_display = ('id', 'content_object')
+
+class PessoaFisicaAdmin(admin.ModelAdmin):
+    list_display = ('id', 'nome', 'cpf')
+
+class PessoaJuridicaAdmin(admin.ModelAdmin):
+    list_display = ('id', 'nome', 'cnpj')
+
+class ItemVendaAdmin(admin.ModelAdmin):
+    list_display = ('id', 'produto', 'quantidade')
+
+class VendaAdmin(admin.ModelAdmin):
+    list_display = ('id', 'data', 'cliente', 'total', 'vencimento')
+
 admin.site.register(User, MyUserAdmin)
 admin.site.register(Fornecedor, FornecedorAdmin)
 admin.site.register(Produto, ProdutoAdmin)
@@ -43,3 +58,8 @@ admin.site.register(Producao, ProducaoAdmin)
 admin.site.register(RecebimentoLeite, RecebimentoLeiteAdmin)
 admin.site.register(CategoriaProduto, CategoriaProdutoAdmin)
 admin.site.register(Estoque, EstoqueAdmin)
+admin.site.register(Cliente, ClienteAdmin)
+admin.site.register(PessoaFisica, PessoaFisicaAdmin)
+admin.site.register(PessoaJuridica, PessoaJuridicaAdmin)
+admin.site.register(ItemVenda, ItemVendaAdmin)
+admin.site.register(Venda, VendaAdmin)

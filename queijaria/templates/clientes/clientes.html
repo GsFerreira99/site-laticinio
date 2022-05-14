@@ -1,0 +1,79 @@
+{% extends 'base_sistema.html' %}
+{% load static %}
+
+
+{%block style%}
+    <link rel="stylesheet" href="{% static 'css/form.css'%}">
+    <link rel="stylesheet" href="{% static 'css/tabela.css'%}">
+    <link rel="stylesheet" href="{% static 'css/modal.css' %}">
+
+    <script type="text/javascript" src="{% static 'js/jquery.js'%}"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css">
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js"></script>
+    <script src="{%static 'js/table.js'%}"></script>
+{%endblock%}
+
+{%block titulo_header%}Clientes{%endblock%}
+
+{% block conteudoPrincipal%}
+
+    <div class="titulo">
+        <h2>Clientes / Consultar</h2>
+    </div>
+
+    <section class="mainContent">
+
+        <div class="box-conteudo">
+
+            <div class="campo ">
+                <table class="tabela" id="tabela" style="width:100%">
+                    <thead>
+                        <tr>
+                            <td>Nome</td>
+                            <td>Sobrenome / Razão Social</td>
+                            <td>CPF / CNPJ</td>
+                            <td>I.E</td>
+                            <td>Endereço</td>
+                            <td>Detalhes</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {%for cliente in clientes %}
+                        <tr>
+                            <td>{{cliente.nome}}</td>
+                            <td>{{cliente.razao_social}}{{cliente.sobrenome}}</td>
+                            <td>{{cliente.cnpj}}{{cliente.cpf}}</td>
+                            <td>{{cliente.inscricao_estadual}}</td>
+                            <td>{{cliente.endereco}}</td>
+                            <td><a href="#"><img class="lupa" src="{% static 'img/lupa.svg'%}" alt=""></a></td>
+                        </tr>
+                        {%endfor%}
+                    </tbody>
+                </table>
+
+            </div>
+
+        </div>
+
+        <div id="myModal" class="modal">
+
+            <div class="modal-content">
+              <span class="close">&times;</span>
+              <h2>Inserir Produção Diária</h2>
+
+              <form action="{% url 'producao-diaria' %}" method="POST" class="form">
+                {% csrf_token %}
+                
+            </form>
+            </div>
+          
+          </div>
+    
+          {% block js %}
+          <script src="{%static 'js/modal.js'%}"></script>
+          
+          {%endblock%}
+
+    </section>
+
+{%endblock%}

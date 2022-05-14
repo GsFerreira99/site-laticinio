@@ -4,6 +4,7 @@
 {%block style%}
 <link rel="stylesheet" href="{% static 'css/producao/recebimento.css' %}">
 <link rel="stylesheet" href="{% static 'css/modal.css' %}">
+<link rel="stylesheet" href="{% static 'css/tabela.css'%}">
 
 
 <script type="text/javascript" src="{% static 'js/jquery.js'%}"></script>
@@ -29,7 +30,7 @@
                 <input class="input-text" placeholder="pesquisar" type="text" name="pesquisar" id="pesquisar">
             </div>
             <div class="campo ">
-                <table class="tabela" id="tabela">
+                <table class="tabela" id="tabela" style="width:100%">
                     <thead>
                         <tr>
                             <td>Data</td>
