@@ -103,18 +103,20 @@ class Cliente(models.Model):
     def __str__(self) -> str:
         return self.content_object.nome
 
-class ItemVenda(models.Model):
-    produto = models.ForeignKey(Produto, on_delete=models.DO_NOTHING, blank=False)
-    quantidade = models.FloatField(blank=False)
-
-
 class Venda(models.Model):
     data = models.DateField()
     cliente = models.ForeignKey(Cliente, on_delete=models.DO_NOTHING)
-    items = models.ManyToManyField(ItemVenda)
     total = models.FloatField()
     faturamento = models.CharField(max_length=25)
     vencimento = models.DateField()
     status = models.CharField(max_length=20, default='Em Aberto')
+
+    def __str__(self) -> str:
+        return str(self.id)
+
+class ItemVenda(models.Model):
+    venda = models.ForeignKey(Venda, on_delete=models.DO_NOTHING, default=1)
+    produto = models.ForeignKey(Produto, on_delete=models.DO_NOTHING, blank=False)
+    quantidade = models.FloatField(blank=False)
 
 
