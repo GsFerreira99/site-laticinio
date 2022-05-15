@@ -6,7 +6,7 @@ from django.views import View
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Sum
 
-from queijaria.models import Estoque, Fornecedor, Producao, Produto, RecebimentoLeite, Cliente
+from queijaria.models import Estoque, Fornecedor, Producao, Produto, RecebimentoLeite, Cliente, Venda
 
 class login(View):
     template_name = 'login.html'
@@ -222,3 +222,14 @@ class estoque(LoginRequiredMixin, View):
 
             }
         return render(request, 'estoque/estoque.html', context)
+
+class vendas(LoginRequiredMixin, View):
+    login_url= 'login/'
+
+    def get(self, request):
+        context = {
+                'user' : request.user,
+                'vendas': Venda.objects.all(),
+            }
+        print(context['vendas'])
+        return render(request, 'vendas/vendas.html', context)

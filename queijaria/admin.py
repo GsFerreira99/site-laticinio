@@ -48,7 +48,7 @@ class ItemVendaAdmin(admin.ModelAdmin):
     list_display = ('id', 'produto', 'quantidade')
 
 class VendaAdmin(admin.ModelAdmin):
-    list_display = ('id', 'data', 'cliente', 'total', 'vencimento')
+    list_display = ('id', 'status', 'data', 'cliente', 'total', 'vencimento')
 
 admin.site.register(User, MyUserAdmin)
 admin.site.register(Fornecedor, FornecedorAdmin)

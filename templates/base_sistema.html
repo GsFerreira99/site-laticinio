@@ -21,6 +21,7 @@
 {% url 'producao-diaria' as producao_diaria_url %}
 {% url 'estoque' as estoque_url %}
 {% url 'clientes' as clientes_url %}
+{% url 'vendas' as venda_url %}
 
 <header class="header">
 
@@ -71,7 +72,7 @@
 
                 <ul class="sidebar__subitems">
                     <li class="sidebar__subitems--item">
-                        <a  href="">Consultar Vendas</a>
+                        <a  href="{{venda_url}}">Consultar Vendas</a>
                     </li>
                     <li class="sidebar__subitems--item">
                         <a  href="">Pedidos</a>

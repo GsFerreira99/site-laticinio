@@ -100,6 +100,9 @@ class Cliente(models.Model):
     object_id = models.PositiveIntegerField() 
     content_object=GenericForeignKey('content_type', 'object_id')
 
+    def __str__(self) -> str:
+        return self.content_object.nome
+
 class ItemVenda(models.Model):
     produto = models.ForeignKey(Produto, on_delete=models.DO_NOTHING, blank=False)
     quantidade = models.FloatField(blank=False)
@@ -112,5 +115,6 @@ class Venda(models.Model):
     total = models.FloatField()
     faturamento = models.CharField(max_length=25)
     vencimento = models.DateField()
+    status = models.CharField(max_length=20, default='Em Aberto')
 
 
