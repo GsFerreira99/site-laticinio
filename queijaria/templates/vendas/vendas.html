@@ -26,7 +26,7 @@
     <section class="mainContent">
 
         <div class="box-conteudo">
-
+            <button class="botao" id="myBtn">Novo</button>
             <div class="campo ">
                 <table class="tabela" id="tabela" style="width:100%">
                     <thead>
@@ -66,54 +66,95 @@
 
             <div class="modal-content">
               <span class="close">&times;</span>
-              <h2>Inserir Produção Diária</h2>
+              <h2>Nova Venda</h2>
 
-              <form action="{% url 'producao-diaria' %}" method="POST" class="form">
+              <form action="{% url 'vendas' %}" method="POST" class="form">
                 {% csrf_token %}
                 <div>
-                    <label for="lote">Lote</label>
-                    <input id="lote" value="{{lote}}" type="number" name="lote">
+                    <label for="cliente">Cliente</label>
+                    <select id="cliente" name="cliente">
+                        <option></option>
+                        {% for cliente in clientes %}
+                        <option>{{cliente}}</option>
+                        {%endfor%}
+                    </select>
                 </div>
                 <div>
                     <label for="data">Data</label>
                 <input id="data" type="date" name="data">
                 </div>
-                <div>
-                    <label for="produto">Produto</label>
-                    <select id="produto" name="produto">
-                        <option></option>
-                        {% for produto in produtos %}
-                        <option>{{produto.nome}}</option>
-                        {%endfor%}
-                    </select>
-                </div>
-                
-                <div>
-                    <label for="leite">Leite</label>
-                    <input id="leite" type="number" step="0.01" name="leite" value="{{dados.leite}}">
-                </div>
-                <div>
-                    <label for="sal">Sal</label>
-                    <input id="sal" type="number" step="0.001" name="sal" value="{{dados.sal}}">
-                </div>
-                <div>
-                    <label for="açucar">Açucar</label>
-                    <input id="açucar" type="number" step="0.001" name="açucar" value="{{dados.açucar}}">
-                </div>
-                <div>
-                    <label for="peso">Peso</label>
-                    <input id="peso" type="number" step="0.001" name="peso" value="{{dados.peso}}">
-                </div>
-                <div>
-                    <label for="rendimento">Rendimento</label>
-                    <input id="rendimento" type="number" step="0.01" name="rendimento" value="{{dados.rendimenro}}">
-                </div>
-                <div>
-                    <label for="observação">Observação</label>
-                    <textarea id="observação" rows="5" name="observação">{{dados.observação}}</textarea>
+                <hr>
+                <div id="produtos-venda">
+                    <div>
+                        <label for="produto">Produto</label>
+                        <select id="produto" name="produto">
+                            <option></option>
+                            {% for produto in produtos %}
+                            <option>{{produto.nome}}</option>
+                            {%endfor%}
+                        </select>
+                    </div>
+                    
+                    <div>
+                        <label for="quantidade">Quantidade</label>
+                        <input id="quantidade" type="number" step="0.01" name="quantidade" value="{{dados.leite}}">
+                    </div>
+                    <button id="adicionar"><img src="{%static 'img/adicionar.png'%}" alt=""></button>
                 </div>
 
-                <button type="submit" >Inserir</button>
+                <table class="tabela">
+                    <thead>
+                        <tr>
+                            <td>Produto</td>
+                            <td>Uni</td>
+                            <td>Valor</td>
+                            <td>Qnt</td>
+                            <td>Subtotal</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Queijo Coalho Especial</td>
+                            <td>KG</td>
+                            <td>40,00</td>
+                            <td>5.643</td>
+                            <td>256,55</td>
+                        </tr>
+                        <tr>
+                            <td>Queijo Coalho Especial</td>
+                            <td>KG</td>
+                            <td>40,00</td>
+                            <td>5.643</td>
+                            <td>256,55</td>
+                        </tr>
+                        <tr>
+                            <td>Queijo Coalho Especial</td>
+                            <td>KG</td>
+                            <td>40,00</td>
+                            <td>5.643</td>
+                            <td>256,55</td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="4">Total</td>
+                            <td style="text-align: center;">R$ 000,00</td>
+                        </tr>
+                    </tfoot>
+                </table>
+
+                <div>
+                    <label for="faturamento">Faturamento</label>
+                    <select id="faturamento" name="faturamento">
+                        <option></option>
+                        <option>7 Dias</option>
+                        <option>14 Dias</option>
+                        <option>21 Dias</option>
+                        <option>30 Dias</option>
+                    </select>
+                </div>
+
+                <button type="submit" >Salvar</button>
             </form>
             </div>
           

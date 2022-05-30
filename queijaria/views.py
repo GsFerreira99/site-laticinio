@@ -1,4 +1,5 @@
 from traceback import print_tb
+from webbrowser import get
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import redirect, render
 from django.contrib import auth, messages
@@ -6,7 +7,7 @@ from django.views import View
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Sum
 
-from queijaria.models import Estoque, Fornecedor, Producao, Produto, RecebimentoLeite, Cliente, Venda
+from queijaria.models import CategoriaProduto, Estoque, Fornecedor, Producao, Produto, RecebimentoLeite, Cliente, TipoProduto, Venda
 
 class login(View):
     template_name = 'login.html'
@@ -170,7 +171,6 @@ class produção_diaria(LoginRequiredMixin, View):
 
         try:
             estoque = Estoque.objects.filter(produto=dados['produto']).first()
-            print(estoque.produto)
             qnt = estoque.quantidade
             peso = dados['peso']
             total = qnt+float(peso)
@@ -219,9 +219,115 @@ class estoque(LoginRequiredMixin, View):
         context = {
                 'user' : request.user,
                 'estoques': Estoque.objects.all(),
-
+                'tipos': TipoProduto.objects.all(),
+                'categorias': CategoriaProduto.objects.all(),
+                'marcas': Produto.objects.values('marca').distinct()
             }
         return render(request, 'estoque/estoque.html', context)
+    
+    def post(self, request):
+        post = request.POST
+
+        dados = {
+            'data': post.get('data'),
+            'produto': post.get('produto'),
+            'quantidade': post.get('quantidade')
+        }
+
+        context = {
+                'user' : request.user,
+                'estoques': Estoque.objects.all(),
+                'tipos': TipoProduto.objects.all(),
+                'categorias': CategoriaProduto.objects.all(),
+                'marcas': Produto.objects.values('marca').distinct(),
+                'dados': dados
+            }
+
+        if dados['data'] == '' or dados['produto'] == '' or dados['quantidade'] == '':
+            messages.error(request, "Preencha os campos vazios.")
+            return render(request, 'estoque/estoque.html', context)
+        
+        if float(dados['quantidade']) <= 0:
+            messages.error(request, "Informe uma quantidade maior que 0.")
+            return render(request, 'estoque/estoque.html', context)
+
+        produto = Estoque.objects.get(produto = Produto.objects.get(nome=dados['produto']))
+        produto.quantidade = produto.quantidade + float(dados['quantidade'])
+
+        produto.save()
+
+        messages.success(request, f"Adicionado {dados['quantidade']} {produto.unidade} ao estoque de {dados['produto']}. Novo estoque {produto.quantidade} {produto.unidade}.")
+        return render(request, 'estoque/estoque.html', context)
+
+class estoqueDetalhes(LoginRequiredMixin, View):
+    
+    def get(self, request, pk):
+        objProduto = Produto.objects.get(id=pk)
+
+        context = {
+                'user' : request.user,
+                'tipos': TipoProduto.objects.all(),
+                'categorias': CategoriaProduto.objects.all(),
+                'marcas': Produto.objects.values('marca').distinct(),
+                'produto': objProduto,
+                'estoque': Estoque.objects.get(produto=objProduto),
+                'unidades': ['UNI', 'KG', 'PC']
+            }
+        return render(request, 'estoque/estoque-detalhes.html', context)
+
+class cadastroProduto(estoque):
+
+    def post(self, request):
+        post = request.POST
+
+        dados = {
+            'tipo' : post.get('tipo'),
+            'nome' : post.get('nome'),
+            'categoria' : post.get('categoria'),
+            'marca' : post.get('marca'),
+            'codBarras' : post.get('codBarras'),
+            'valCompra' : post.get('valCompra'),
+            'valVenda' : post.get('valVenda'),
+            'unidade': post.get('unidade')
+        }
+
+        context = {
+                'user' : request.user,
+                'estoques': Estoque.objects.all(),
+                'tipos': TipoProduto.objects.all(),
+                'categorias': CategoriaProduto.objects.all(),
+                'marcas': Produto.objects.values('marca').distinct(),
+                'dados': dados
+            }
+
+
+        if len(list(filter(lambda x: x.nome == dados['nome'] or x.nome == dados['nome'].title() or x.nome == dados['nome'].upper() or x.nome == dados['nome'].lower(), Produto.objects.filter(nome__contains = dados['nome'])))) != 0:
+            messages.error(request, "Nome de produto já cadastrado.")
+            return render(request, 'estoque/estoque.html', context)
+
+        if dados['tipo'] == '' or dados['nome']  == '' or dados['unidade'] == '' or dados['categoria'] == '' or dados['marca'] == '' or dados['codBarras'] == '' or dados['valCompra'] == '' or dados['valVenda'] == '':
+            messages.error(request, "Preencha os campos vazios.")
+            return render(request, 'estoque/estoque.html', context)
+
+        objProduto = Produto.objects.create(
+            tipo = TipoProduto.objects.get(nome=dados['tipo']),
+            nome = dados['nome'],
+            categoria = CategoriaProduto.objects.get(nome=dados['categoria']),
+            marca = dados['marca'],
+            codBarras = dados['codBarras'],
+            valorCompra = dados['valCompra'],
+            valorVenda = dados['valVenda']
+        )
+
+        Estoque.objects.create(
+            produto = objProduto,
+            quantidade = 0,
+            unidade = dados['unidade']
+        )
+
+        messages.success(request, "Novo produto inserido com sucesso.")
+        return redirect('estoque')
+
 
 class vendas(LoginRequiredMixin, View):
     login_url= 'login/'
@@ -231,5 +337,12 @@ class vendas(LoginRequiredMixin, View):
                 'user' : request.user,
                 'vendas': Venda.objects.all(),
             }
-        print(context['vendas'])
+        return render(request, 'vendas/vendas.html', context)
+
+    def post(self, request):
+        context = {
+                'user' : request.user,
+                'vendas': Venda.objects.all(),
+            }
+        print(request.POST)
         return render(request, 'vendas/vendas.html', context)

@@ -81,18 +81,15 @@ class Pessoa(models.Model):
     def __str__(self):
         return self.nome
 
-
 class PessoaFisica(Pessoa):
     sobrenome = models.CharField(max_length=50)
     cpf = models.CharField(max_length=11)
     nascimento = models.DateField(blank=True)
 
-
 class PessoaJuridica(Pessoa):
     razao_social = models.CharField(max_length=255)
     cnpj = models.CharField(max_length=14)
     inscricao_estadual = models.CharField(max_length=20)
-
 
 class Cliente(models.Model):
     limite = models.Q(model = 'pessoafisica') | models.Q(model = 'pessoajuridica')

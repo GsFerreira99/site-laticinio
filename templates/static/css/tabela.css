@@ -1,6 +1,7 @@
 .tabela{
     color: var(--preto);
     width: 100%;
+    margin-bottom: 1rem;
 }
 
 .tabela thead {
@@ -39,10 +40,17 @@
 }
 
 .dataTables_wrapper {
-    width: 300px;
+    width: 250px;
     margin: 0 auto;
 }
 
+
+@media screen and (min-width: 400px) {
+    .dataTables_wrapper {
+        width: 300px;
+        margin: 0 auto;
+    }
+}
 
 @media screen and (min-width: 550px) {
     .dataTables_wrapper {

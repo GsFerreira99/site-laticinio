@@ -26,7 +26,8 @@
     <section class="mainContent">
 
         <div class="box-conteudo">
-
+            <button class="botao" id="myBtn">Cadastrar Produto</button>
+            <button class="botao" id="myBtn2">Nova Entrada</button>
             <div class="campo ">
                 <table class="tabela" id="tabela" style="width:100%">
                     <thead>
@@ -43,7 +44,7 @@
                             <td>{{estoque.produto}}</td>
                             <td>{{estoque.unidade}}</td>
                             <td>{{estoque.quantidade}}</td>
-                            <td><a href="#"><img class="lupa" src="{% static 'img/lupa.svg'%}" alt=""></a></td>
+                            <td><a href="/producao/estoque/{{estoque.id}}"><img class="lupa" src="{% static 'img/lupa.svg'%}" alt=""></a></td>
                         </tr>
                         {%endfor%}
                     </tbody>
@@ -57,54 +58,98 @@
 
             <div class="modal-content">
               <span class="close">&times;</span>
-              <h2>Inserir Produção Diária</h2>
+              <h2>Cadastrar Novo Produto</h2>
 
-              <form action="{% url 'producao-diaria' %}" method="POST" class="form">
+              <form action="{% url 'cadastro-produto' %}" method="POST" class="form">
                 {% csrf_token %}
                 <div>
-                    <label for="lote">Lote</label>
-                    <input id="lote" value="{{lote}}" type="number" name="lote">
+                    <label for="tipo">Tipo</label>
+                    <select id="tipo" name="tipo">
+                        <option></option>
+                        {% for tipo in tipos %}
+                        <option>{{tipo.nome}}</option>
+                        {%endfor%}
+                    </select>
                 </div>
                 <div>
-                    <label for="data">Data</label>
-                <input id="data" type="date" name="data">
+                    <label for="nome">Nome</label>
+                    <input id="nome" type="text" name="nome" value="{{dados.nome}}">
+                </div>
+                <div>
+                    <label for="categoria">Categoria</label>
+                    <select id="categoria" name="categoria">
+                        <option></option>
+                        {% for categoria in categorias %}
+                        <option>{{categoria.nome}}</option>
+                        {%endfor%}
+                    </select>
+                </div>
+                <div>
+                    <label for="marca">Marca</label>
+                    <select id="marca" name="marca">
+                        <option></option>
+                        {% for produto in marcas %}
+                        <option>{{produto.marca}}</option>
+                        {%endfor%}
+                    </select>
+                </div>
+                <div>
+                    <label for="unidade">Unidade</label>
+                    <select id="unidade" name="unidade">
+                        <option></option>
+                        <option>UNI</option>
+                        <option>KG</option>
+                        <option>PC</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="codBarras">Codigo de Barras</label>
+                    <input id="codBarras" type="number" step="1" name="codBarras" value="{{dados.codBarras}}">
+                </div>
+                <div>
+                    <label for="valCompra">Valor Compra</label>
+                    <input id="valCompra" type="number" step="0.01" name="valCompra" value="{{dados.valCompra}}">
+                </div>
+                <div>
+                    <label for="valVenda">Valor Venda</label>
+                    <input id="valVenda" type="number" step="0.01" name="valVenda" value="{{dados.valVenda}}">
+                </div>
+
+                <button type="submit" >Salvar</button>
+            </form>
+            </div>
+          
+          </div>
+        
+        <div id="myModal2" class="modal">
+
+            <div class="modal-content">
+              <span id="close2" class="close">&times;</span>
+              <h2>Nova Entrada</h2>
+
+              <form action="{% url 'estoque' %}" method="POST" class="form">
+                {% csrf_token %}
+
+                <div>
+                    <label for="leite">Data</label>
+                    <input id="data" type="date" name="data" value="{{dados.leite}}">
                 </div>
                 <div>
                     <label for="produto">Produto</label>
                     <select id="produto" name="produto">
                         <option></option>
-                        {% for produto in produtos %}
-                        <option>{{produto.nome}}</option>
+                        {% for estoque in estoques %}
+                        <option>{{estoque.produto}}</option>
                         {%endfor%}
                     </select>
                 </div>
                 
                 <div>
-                    <label for="leite">Leite</label>
-                    <input id="leite" type="number" step="0.01" name="leite" value="{{dados.leite}}">
-                </div>
-                <div>
-                    <label for="sal">Sal</label>
-                    <input id="sal" type="number" step="0.001" name="sal" value="{{dados.sal}}">
-                </div>
-                <div>
-                    <label for="açucar">Açucar</label>
-                    <input id="açucar" type="number" step="0.001" name="açucar" value="{{dados.açucar}}">
-                </div>
-                <div>
-                    <label for="peso">Peso</label>
-                    <input id="peso" type="number" step="0.001" name="peso" value="{{dados.peso}}">
-                </div>
-                <div>
-                    <label for="rendimento">Rendimento</label>
-                    <input id="rendimento" type="number" step="0.01" name="rendimento" value="{{dados.rendimenro}}">
-                </div>
-                <div>
-                    <label for="observação">Observação</label>
-                    <textarea id="observação" rows="5" name="observação">{{dados.observação}}</textarea>
+                    <label for="quantidade">Quantidade</label>
+                    <input id="quantidade" type="number" step="0.01" name="quantidade" value="{{dados.leite}}">
                 </div>
 
-                <button type="submit" >Inserir</button>
+                <button type="submit" >Salvar</button>
             </form>
             </div>
           

@@ -3,6 +3,20 @@ main {
     height: 100%;
 }
 
+.link{
+    text-decoration: none;
+    color: var(--branco-texto);
+}
+
+.link:hover{
+    font-weight: 500;
+}
+
+.titulo_box{
+    font-weight: 800;
+    font-size: 1.3rem;
+}
+
 .header {
     background-color: var(--preto);
     color: var(--branco-texto);
@@ -238,6 +252,7 @@ main {
 
     background-color: var(--preto);
     color: var(--branco-texto);
+    margin-bottom: 1rem;
 }
 
 .botao:hover {
@@ -251,6 +266,15 @@ main {
     padding: 0.5rem 2rem;
 }
 
+#adicionar{
+    background: var(--branco-texto);
+    width: 40px;
+    border: none;
+}
+
+#adicionar img{
+    width: 100%;
+}
 
 .form{
     color: var(--preto);
@@ -302,7 +326,21 @@ main {
     grid-gap: 1rem;
 }
 
+#produtos-venda{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
 
+#produtos-venda div{
+    width: 40%;
+}
+
+#produtos-venda button{
+    padding: 0;
+    margin: 0;
+}
 
 @media screen and (min-width: 768px) {
 
